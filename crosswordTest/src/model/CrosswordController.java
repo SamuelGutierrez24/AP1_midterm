@@ -20,6 +20,28 @@ public class CrosswordController {
 	 */
 	public void initCrossword(String[][] puzzle) {
 		
+		crossword = new Cell [puzzle.length][puzzle[0].length];
+		Cell aCell = null;
+		CellType state = null;
+		String apoyo = "";
+		int count = 1;
+		for (int i=0; i< crossword.length; i++ ) { // filas numbers.length
+			for (int j = 0; j < crossword[0].length; j++) { //columnas numbers[0].length
+			   apoyo = puzzle[i][j];
+			   if(apoyo == " "){
+				   state = CellType.BLACK;
+				   aCell = new Cell(state, apoyo, -1);
+				   crossword[i][j] = aCell;
+			   }else{
+				   state = CellType.CLOSED;
+				   aCell = new Cell(state, apoyo, count);
+				   crossword[i][j] = aCell;
+				   count++;
+			   }
+				
+			}
+		
+		}
 		
 	}
 	/**
@@ -51,8 +73,26 @@ public class CrosswordController {
 	 * @return
 	 */
 	public String getHint(String letter) {
+		String out = "";
+
+		for (int i=0; i< crossword.length; i++ ) { // filas numbers.length
+			for (int j = 0; j < crossword[0].length; j++) { //columnas numbers[0].length
+			
+					
+				if(crossword[i][j].getState() ==CellType.CLOSED){
+				
+					if(crossword[i][j].getLetter() == letter){
+						out = "Hay una palabra con la letra " + letter +" en el crucigrama en la casilla " + crossword[i][j].getNumber();
+						crossword[i][j].setState(CellType.OPEN);
+					}else{
+						out = "Lo siento, no hay palabras con la letra " + letter;
+					}
+				}
+			}
 		
-		return null;
+		}
+
+		return out;
 	}
 	
 	/**
@@ -95,6 +135,8 @@ public class CrosswordController {
 					}else {
 						numbers += " "+actual.getNumber() +"   ";
 						letters += "    "+ actual.getLetter() + " ";
+					
+
 					}
 				}else //una cifra
 				{
