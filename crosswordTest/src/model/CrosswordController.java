@@ -74,16 +74,17 @@ public class CrosswordController {
 	 */
 	public String getHint(String letter) {
 		String out = "";
-
+		boolean flag = true;
 		for (int i=0; i< crossword.length; i++ ) { // filas numbers.length
 			for (int j = 0; j < crossword[0].length; j++) { //columnas numbers[0].length
 			
 					
-				if(crossword[i][j].getState() ==CellType.CLOSED){
+				if(crossword[i][j].getState() ==CellType.CLOSED && flag == true){
 				
-					if(crossword[i][j].getLetter() == letter){
+					if(crossword[i][j].getLetter().equals(letter)){
 						out = "Hay una palabra con la letra " + letter +" en el crucigrama en la casilla " + crossword[i][j].getNumber();
 						crossword[i][j].setState(CellType.OPEN);
+						flag = false;
 					}else{
 						out = "Lo siento, no hay palabras con la letra " + letter;
 					}
